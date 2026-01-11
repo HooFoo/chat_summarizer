@@ -54,14 +54,17 @@ class Database {
     }
 
     public function updateChat($chat_id, $title) {
+        $now = time();
         $sql = "INSERT INTO chats (chat_id, title, last_active) 
                 VALUES (:chat_id, :title, :last_active) 
-                ON DUPLICATE KEY UPDATE title = :title, last_active = :last_active";
+                ON DUPLICATE KEY UPDATE title = :title_upd, last_active = :last_active_upd";
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute([
             'chat_id' => $chat_id,
             'title' => $title,
-            'last_active' => time()
+            'last_active' => $now,
+            'title_upd' => $title,
+            'last_active_upd' => $now
         ]);
     }
 }
